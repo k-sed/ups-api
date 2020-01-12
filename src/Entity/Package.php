@@ -82,7 +82,6 @@ class Package implements NodeInterface
         );
         $this->setReferenceNumber(new ReferenceNumber());
         $this->setReferenceNumber2(new ReferenceNumber());
-        $this->setPackageWeight(new PackageWeight());
         $this->setPackageServiceOptions(new PackageServiceOptions());
 
         if (null !== $attributes) {
@@ -144,7 +143,10 @@ class Package implements NodeInterface
             $packageNode->appendChild($document->createElement('Description', $this->getDescription()));
         }
         $packageNode->appendChild($this->getPackagingType()->toNode($document));
-        $packageNode->appendChild($this->getPackageWeight()->toNode($document));
+
+        if (null !== $this->getPackageWeight()) {
+            $packageNode->appendChild($this->getPackageWeight()->toNode($document));
+        }
 
 
         if (null !== $this->getDimensions()) {
