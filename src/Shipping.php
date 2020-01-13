@@ -43,6 +43,8 @@ class Shipping extends Ups
 
     private $request;
 
+    private $reqxml = '';
+
     /**
      * @param string|null $accessKey UPS License Access Key
      * @param string|null $userId UPS User ID
@@ -78,6 +80,7 @@ class Shipping extends Ups
         ShipmentRequestReceiptSpecification $receiptSpec = null
     ) {
         $request = $this->createConfirmRequest($validation, $shipment, $labelSpec, $receiptSpec);
+        $this->reqxml = $request;
         $this->response = $this->getRequest()->request($this->createAccess(), $request, $this->compileEndpointUrl($this->shipConfirmEndpoint));
         $response = $this->response->getResponse();
 
@@ -93,6 +96,11 @@ class Shipping extends Ups
         } else {
             return $this->formatResponse($response);
         }
+    }
+
+    public function getReqXML()
+    {
+        return $this->reqxml;
     }
 
     /**
